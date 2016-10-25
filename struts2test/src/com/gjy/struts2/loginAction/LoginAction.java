@@ -1,0 +1,51 @@
+
+package com.gjy.struts2.loginAction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.gjy.struts2.entity.Book;
+import com.gjy.struts2.interfaceAction.Action;
+import com.opensymphony.xwork2.ActionContext;
+
+public class LoginAction implements Action {
+
+	private String userName;
+	private String passWord;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	// 处理用护请求的execute方法
+	public String execute() throws Exception {
+
+		if (getUserName().equals("asc") && getPassWord().equals("hehe")) {
+			// 通过ActionContext访问Web对象的Session对象,此处的ActionContext返回的是一个Map
+			// 虽然struts2的action中没有HttpSession对象,但我们也可以通过通过ActionContext访问Web对象的Session对象
+			Map sessionMap = ActionContext.getContext().getSession();
+			sessionMap.put("user", getUserName());
+			Book book = new Book();
+			Object books[] = book.getBook();
+			List<Object[]> bookList = new ArrayList<Object[]>();
+			bookList.add(books);
+			sessionMap.put("book", bookList);
+			return SUCCESS;
+		} else {
+			return ERROR;
+		}
+	}
+}
